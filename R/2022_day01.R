@@ -1,3 +1,7 @@
+library(readr)
+library(glue)
+library(magrittr)
+
 data <- readr::read_lines("data/2022_day01") %>%
   as.double(.)
 
@@ -15,7 +19,7 @@ res <- unlist(res)
 
 part1 <- max(res)
 
-part2 <- sum(head(res, 3))
+part2 <- sum(head(sort(res, TRUE), 3))
 
 glue::glue(
   "Part1: {part1}
