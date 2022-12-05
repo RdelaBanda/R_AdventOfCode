@@ -1,25 +1,22 @@
 library(readr)
 library(glue)
-library(magrittr)
 
-data <- readr::read_lines("data/2022_day01") %>%
-  as.double(.)
+data <- as.integer(readr::read_lines("data/2022_day01"))
 
-splits <- c(which(is.na(data)), length(data))
-res <- vector(mode = "list", length = length(splits))
+item <- c(0, which(is.na(data)))
 
-start <- 1
+elves <- vector(mode = "list", length = length(item))
 
-for (i in seq_len(length(splits))) {
-  res[i] <- sum(data[start:(splits[i] - 1)])
-  start <- splits[i] + 1
+for (i in seq_along(item)) {
+  tmp <- ifelse(i == length(item), length(data), item[i + 1] - 1)
+  elves[[i]] <- data[(item[i] + 1):tmp]
 }
 
-res <- unlist(res)
+cal <- sapply(elves, sum)
 
-part1 <- max(res)
+part1 <- max(cal)
 
-part2 <- sum(head(sort(res, TRUE), 3))
+part2 <- sum(tail(sort(cal), 3))
 
 glue::glue(
   "Part1: {part1}
