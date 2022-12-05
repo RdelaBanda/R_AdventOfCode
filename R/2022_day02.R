@@ -1,42 +1,15 @@
 library(readr)
 library(glue)
-library(dplyr)
 
-data <- readr::read_delim("data/2022_day02", col_names = FALSE, col_types = "c") %>%
-  dplyr::rename(opponent = X1, player = X2) %>%
-  dplyr::mutate(
-    result = dplyr::case_when(
-      opponent == "A" & player == "X" ~ 3,
-      opponent == "A" & player == "Y" ~ 6,
-      opponent == "A" & player == "Z" ~ 0,
-      opponent == "B" & player == "X" ~ 0,
-      opponent == "B" & player == "Y" ~ 3,
-      opponent == "B" & player == "Z" ~ 6,
-      opponent == "C" & player == "X" ~ 6,
-      opponent == "C" & player == "Y" ~ 0,
-      opponent == "C" & player == "Z" ~ 3
-    ) + dplyr::case_when(
-      player == "X" ~ 1,
-      player == "Y" ~ 2,
-      player == "Z" ~ 3
-    ),
-    result2 = dplyr::case_when(
-      opponent == "A" & player == "X" ~ 0 + 3,
-      opponent == "A" & player == "Y" ~ 3 + 1,
-      opponent == "A" & player == "Z" ~ 6 + 2,
-      opponent == "B" & player == "X" ~ 0 + 1,
-      opponent == "B" & player == "Y" ~ 3 + 2,
-      opponent == "B" & player == "Z" ~ 6 + 3,
-      opponent == "C" & player == "X" ~ 0 + 2,
-      opponent == "C" & player == "Y" ~ 3 + 3,
-      opponent == "C" & player == "Z" ~ 6 + 1 
-    )
-  )
+data <- readr::read_lines("data/2022_day02") %>% table(.)
 
+part1_comb <- data.frame(AX = 4, AY = 8, AZ = 3, BX = 1, BY = 5, BZ = 9, CX = 7, CY = 2, CZ = 6)
 
-part1 <- sum(data$result)
+part1 <- sum(data * c(4, 8, 3, 1, 5, 9, 7, 2, 6))
 
-part2 <- sum(data$result2)
+part1_comb <- data.frame(AX = 3, AY = 4, AZ = 8, BX = 1, BY = 5, BZ = 9, CX = 2, CY = 6, CZ = 7)
+
+part2 <- sum(data * c(3, 4, 8, 1, 5, 9, 2, 6, 7))
 
 glue::glue(
   "Part1: {part1}
